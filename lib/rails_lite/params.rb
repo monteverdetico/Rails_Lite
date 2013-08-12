@@ -19,11 +19,26 @@ class Params
 
   private
   def parse_www_encoded_form(www_encoded_form)
+    level = @params
+
     params = URI.decode_www_form(www_encoded_form, enc=Encoding::UTF_8)
     (0...params.count).each do |i|
       key = params[i].first
       value = params[i].last
-      @params[key] = value
+
+      level = @params
+      parsed_keys = parse_key(key)
+
+      parsed_keys.each do |key|
+        level[key] = value if key == parsed_keys.last
+
+        if level[key].nil?
+          level[key] = {}
+          level = level[key]
+        else
+          level = level[key]
+        end
+      end
     end
   end
 
