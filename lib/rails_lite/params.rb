@@ -2,8 +2,8 @@ require 'uri'
 
 class Params
   def initialize(req, route_params)
-    @req, @route_params = req, route_params
-    @params = {}
+    @req = req
+    @params = route_params
 
     parse_www_encoded_form(req.query_string) if req.query_string
     parse_www_encoded_form(req.body) if req.body

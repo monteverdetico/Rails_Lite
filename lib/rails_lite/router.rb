@@ -8,11 +8,17 @@ class Route
 
   def matches?(req)
     request_method = req.request_method.downcase.to_sym
-    self.http_method == request_method
+
+    self.http_method == request_method && self.pattern =~ req.path
   end
 
   def run(req, res)
-    controller = controller_class.new(req, res)
+    router_params = {}
+
+    match = self.pattern.match(req.path)
+    router_params[:id] = match[:id]
+
+    controller = controller_class.new(req, res, router_params)
     controller.invoke_action(@action_name)
   end
 end
@@ -43,6 +49,7 @@ class Router
     @routes.each do |route|
       return route if route.matches?(req)
     end
+    nil
   end
 
   def run(req, res)
