@@ -35,7 +35,7 @@ class ControllerBase
   def render_content(body, content_type)
     @response.content_type = content_type
     @response.body = body
-
+    p @response.body
     session.store_session(@response)
 
     @already_rendered = true
@@ -53,9 +53,11 @@ class ControllerBase
     template = ERB.new(file)
 
     body = template.result(binding)
-    render_content(body, 'html')
+    render_content(body, content_type)
   end
 
-  def invoke_action(name)
+  def invoke_action(action_name)
+    self.send(action_name)
+    render(action_name) unless @already_rendered == true
   end
 end
