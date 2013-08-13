@@ -16,7 +16,7 @@ class Route
     router_params = {}
 
     match = self.pattern.match(req.path)
-    router_params[:id] = match[:id]
+    router_params[:id] = match[:id] if match.names.include?("id")
 
     controller = controller_class.new(req, res, router_params)
     controller.invoke_action(@action_name)

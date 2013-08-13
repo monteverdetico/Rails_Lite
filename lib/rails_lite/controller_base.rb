@@ -35,7 +35,7 @@ class ControllerBase
   def render_content(body, content_type)
     @response.content_type = content_type
     @response.body = body
-    p @response.body
+
     session.store_session(@response)
 
     @already_rendered = true
