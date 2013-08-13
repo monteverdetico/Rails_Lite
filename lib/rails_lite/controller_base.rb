@@ -2,6 +2,7 @@ require 'erb'
 require 'active_support/core_ext'
 require_relative 'params'
 require_relative 'session'
+require_relative 'flash'
 
 class ControllerBase
   attr_reader :params
@@ -13,6 +14,10 @@ class ControllerBase
 
     @already_rendered = false
     @response_built = false
+  end
+
+  def flash
+    @flash ||= Flash.new(@request)
   end
 
   def session
@@ -54,10 +59,12 @@ class ControllerBase
 
     body = template.result(binding)
     render_content(body, content_type)
+
+    @flash.reset_flash(@response)
   end
 
   def invoke_action(action_name)
     self.send(action_name)
-    render(action_name) unless @already_rendered == true
+    render(action_name) unless already_rendered?
   end
 end
