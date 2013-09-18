@@ -14,6 +14,7 @@ class Params
   end
 
   def to_s
+    #@params.to_json.to_s WHY TO JSON?
     @params.to_s
   end
 

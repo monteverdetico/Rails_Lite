@@ -59,8 +59,6 @@ class ControllerBase
 
     body = template.result(binding)
     render_content(body, content_type)
-
-    @flash.reset_flash(@response)
   end
 
   def invoke_action(action_name)

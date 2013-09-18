@@ -15,7 +15,10 @@ class Route
   def run(req, res)
     router_params = {}
 
+    #self.pattern => @pattern
     match = self.pattern.match(req.path)
+    # better to iterate through the names to collect the possible
+    # information, rather than manually assign :id as the key here.
     router_params[:id] = match[:id] if match.names.include?("id")
 
     controller = controller_class.new(req, res, router_params)
